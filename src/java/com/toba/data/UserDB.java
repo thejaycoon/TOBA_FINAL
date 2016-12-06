@@ -10,6 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import com.toba.business.shared.User;
+import java.util.List;
 
 /**
  *
@@ -63,6 +64,39 @@ public static User selectUser(String username, String password){
     }
     
 }
-
+public static User selectUserUsername(String username){
+    EntityManager em = DBUtil.getEmFactory().createEntityManager();
+    String qString = "SELECT u FROM User u " + 
+            "WHERE u.userName = :USERNAME";
+    TypedQuery<User> q = em.createQuery(qString,  User.class);
+    q.setParameter("USERNAME", username);
+    try {
+        User user = q.getSingleResult();
+        return user;
+    } catch (NoResultException e){
+        return null;
+    } finally {
+        em.close();
+    }
     
+}
+    public static List<User> selectUsers(){
+    EntityManager em = DBUtil.getEmFactory().createEntityManager();
+    String qString = "SELECT u FROM User u ";
+
+    TypedQuery<User> q = em.createQuery(qString,  User.class);
+    List<User> users;
+    try {
+        users = q.getResultList();
+        if(users==null || users.isEmpty()){
+            users=null;
+        }
+        return users;
+    } catch (NoResultException e){
+        return null;
+    } finally {
+        em.close();
+    }
+    
+}
 }

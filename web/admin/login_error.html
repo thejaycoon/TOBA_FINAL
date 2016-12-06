@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TOBA Online Banking</title>
+        <link rel="stylesheet" href="../Styles/main.css" type="text/css"/>
+    </head>
+    <body>
+    <nav>
+         <a href="../index.jsp">Home</a> &nbsp;
+         <a href="../login.jsp">Login</a> &nbsp;
+         <a href="login.jsp">Admin Login</a> &nbsp;
+         <a href="reports.jsp">Reports</a> &nbsp;
+	 <a href="../new_customer.jsp">New Customer</a> &nbsp;
+         <a href="../account_activity.jsp">Account Activity</a> &nbsp;
+         <a href="../account_activity.jsp">Transfer Funds</a> &nbsp;
+    </nav>
+        <h1>Admin Login Form - Error</h1>
+        <p>You did not log in successfully.</p>
+        <p>Please check your username and password and try again.</p>
+        <p>If that doesn't work, you may need to implement the JDBC realm 
+            as described in chapter 16.</p>
+        <form action="j_security_check" method="get">
+            <label class="pad_top">Username</label>
+            <input type="text" name="j_username"><br>
+            <label class="pad_top">Password</label>
+            <input type="password" name="j_password"><br>
+            <label>&nbsp;</label>
+            <input type="submit" value="Login" class="margin_left">    
+        </form>
+    </body>
+</html>

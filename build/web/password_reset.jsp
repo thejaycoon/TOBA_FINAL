@@ -19,6 +19,8 @@
     <nav>
          <a href="index.jsp">Home</a> &nbsp;
          <a href="login.jsp">Login</a> &nbsp;
+         <a href="admin/login.jsp">Admin Login</a> &nbsp;
+         <a href="admin/reports.jsp">Reports</a> &nbsp;
 	 <a href="new_customer.jsp">New Customer</a> &nbsp;
     </nav>
         <h1>Need to reset password?</h1>

@@ -19,6 +19,8 @@
         <nav>
          <a href="index.jsp">Home</a> &nbsp;
          <a href="login.jsp">Login</a> &nbsp;
+         <a href="admin/login.jsp">Admin Login</a> &nbsp;
+         <a href="admin/reports.jsp">Reports</a> &nbsp;
 	 <a href="new_customer.jsp">New Customer</a> &nbsp;
          <a href="account_activity.jsp">Account Activity</a> &nbsp;
          <a href="transfer_funds.jsp">Transfer Funds</a> &nbsp;
@@ -48,7 +50,6 @@
             <span>${user.userName}</span><br>
             <label>Password:</label>
             <span>${user.password}</span><br>
-            
     </body>
     <%@ include file="/includes/footer.jsp" %>
 </html>

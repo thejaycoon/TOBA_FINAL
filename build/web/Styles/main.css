@@ -25,7 +25,7 @@ label {
     margin-bottom: 0.5em;
     font-weight: bold;
 }
-input[type="text"], input[type="email"] {  /* An attribute selector */
+input[type="text"], input[type="email"], input[type="password"] {  /* An attribute selector */
     width: 15em;
     margin-left: 0.5em;    
     margin-bottom: 0.5em;
@@ -45,3 +45,10 @@ br {
 .margin_left {
     margin-left: 0.5em;
 }
+
+element {
+}
+table {
+    border-collapse: collapse;
+}
+

@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <Context path="/TOBA">
+    <Context path="/TOBA">        
+        <Resource name="jdbc/toba" auth="Container"
+            maxActive="100" maxIdle="30" maxWait="10000"
+            username="root" password="sesame"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/toba"
+            logAbandoned="true" removeAbandoned="true"
+            removeAbandonedTimeout="60" type="javax.sql.DataSource" />
+        <Realm 
+            className="org.apache.catalina.realm.DataSourceRealm" 
+            debug="99" 
+            dataSourceName="jdbc/toba"
+            localDataSource="true"
+            roleNameCol="Rolename" 
+            userCredCol="Password" 
+            userNameCol="Username" 
+            userRoleTable="userrole" 
+            userTable="userpass"/>
+
+            
  <!--maxActive: Maximum number of dB connections in pool. Make sure you
          configure your mysqld max_connections large enough to handle
          all of your db connections. Set to 0 for no limit.
@@ -26,19 +45,6 @@
         the container will prevent connection pool leaks by automatically removing 
         Connection, Statement, ResultSet, etc. objects that haven't been closed 
         -->
-  <Resource
-      auth="Container"
-      driverClassName="com.mysql.jdbc.Driver" 
-      logAbandoned="true"
-      maxActive="100" 
-      maxIdle="30"
-      maxWait="10000" 
-      name="jdbc/toba" 
-      password="sesame" 
-      removeAbandoned="true"
-      removeAbandonedTimeout="60" 
-      type="javax.sql.DataSource"
-      url="jdbc:mysql://localhost:3306/toba" 
-      username="root"/>
+
 </Context>
 

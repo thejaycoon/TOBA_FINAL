@@ -5,12 +5,15 @@
  */
 package com.toba.business.registration;
 
+import com.toba.business.shared.PasswordUtil;
 import com.toba.business.shared.User;
+import static com.toba.business.shared.User_.password;
 import com.toba.business.shared.account;
 import com.toba.data.AccountDB;
 import com.toba.data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,23 +67,50 @@ public class NewCustomerServlet extends HttpServlet {
                     firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || address.isEmpty()
                     || city.isEmpty() || state.isEmpty() || zipCode.isEmpty() || eMail.isEmpty()){
                 message = "Please fill out all the form fields.";
-                url = "/new_customer.jsp";
+                url = "/login.jsp";
             }
              // store data in User object and save User object in database
             User user = new User(firstName,lastName,phone,address,city,state,zipCode,eMail);
             user.setUserName (user.getLastName() + user.getZipCode());
-            user.setPassword("welcome1"); 
+            //user.setPassword("welcome1"); 
             request.setAttribute("message", url);
-         //   HttpSession session = request.getSession();
-        //    session.setAttribute("user", user);
+         
+            // check strength requirements
+            try {
+                PasswordUtil.checkPasswordStrength("welcome1");
+                message = "";
+            } catch (Exception e) {
+                message = e.getMessage();
+            }
+            request.setAttribute("message", message);  
+            // hash and salt password
+            String hashedPassword;
+            String salt = "";
+            String saltedAndPassword;
+            try {
+                salt = PasswordUtil.getSalt();
+                saltedAndPassword = "welcome1" + salt;                    
+                hashedPassword = PasswordUtil.hashPassword(saltedAndPassword);
+                
+                user.setPassword(hashedPassword);
+                user.setSalt(salt);
+            } catch (NoSuchAlgorithmException ex) {
+                hashedPassword = ex.getMessage();
+                saltedAndPassword = ex.getMessage();
+            }
+            request.setAttribute("hashedPassword", hashedPassword);
+            request.setAttribute("salt", salt);
+            request.setAttribute("saltedAndPassword", saltedAndPassword);
+                    
             UserDB.insert(user);//add customer to database
             //type attribute
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
             account checking = new account("Checking", 0, user);
             account savings = new account("Savings",25.00, user);
             AccountDB.insert(savings);
             AccountDB.insert(checking);
         }
-        
         // forward request and response objects to specified URL
         getServletContext()
             .getRequestDispatcher(url)

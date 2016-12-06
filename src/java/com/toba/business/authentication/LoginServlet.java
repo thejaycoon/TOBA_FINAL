@@ -5,6 +5,7 @@
  */
 package com.toba.business.authentication;
 
+import com.toba.business.shared.PasswordUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -49,20 +50,38 @@ public class LoginServlet extends HttpServlet {
            //HttpSession session = request.getSession();
            // User user = (User)session.getAttribute("user");
             
-            User user = UserDB.selectUser(userName, password);
+            User user = UserDB.selectUserUsername(userName);
+           
             if(user == null){
                 url = "/new_customer.jsp";
             }
             else {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-                url = "/account_activity.jsp";
+                String hashedPassword;
+                String salt = user.getSalt();
+                String saltedAndPassword;
+                try{
+                    saltedAndPassword = password + salt;
+                    hashedPassword = PasswordUtil.hashPassword(saltedAndPassword);
+                }
+                catch(Exception e){ 
+                    hashedPassword = e.getMessage();
+                    saltedAndPassword = e.getMessage();
+                }
                 
-                account checking = AccountDB.selectAccount(user,"Checking");
-                account savings = AccountDB.selectAccount(user,"Savings");
-                
-                session.setAttribute("checking", checking);
-                session.setAttribute("savings", savings);
+                if(user.getPassword().equals(hashedPassword)){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user);
+                    url = "/account_activity.jsp";
+
+                    account checking = AccountDB.selectAccount(user,"Checking");
+                    account savings = AccountDB.selectAccount(user,"Savings");
+
+                    session.setAttribute("checking", checking);
+                    session.setAttribute("savings", savings);
+                }
+                else{
+                    url = "/login_failure.jsp";
+                }
             }
             
         }
